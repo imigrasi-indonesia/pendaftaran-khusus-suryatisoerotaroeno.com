@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifikasi Data - Kementerian Hukum dan HAM RI</title>
+    <style>
+        :root {
+            --primary-color: #0F172A;
+            --secondary-color: #16A34A;
+            --danger-color: #DC2626;
+            --warning-color: #F59E0B;
+            --gray-color: #6B7280;
+            --light-gray-color: #F3F4F6;
+            --border-color: #E5E7EB;
+            --warning-bg: #FEF3C7;
+            --warning-text: #92400E;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #F9FAFB;
+            color: #1F2937;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        .title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .security-warning-text {
+            color: var(--danger-color);
+            font-weight: bold;
+            font-size: 0.8rem;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .demo-badge {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* Warning Section */
+        .warning-section {
+            background-color: var(--warning-bg);
+            border-left: 4px solid var(--warning-color);
+            padding: 16px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .warning-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--warning-text);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .warning-content {
+            color: var(--warning-text);
+            font-size: 0.9rem;
+        }
+
+        .warning-data {
+            margin-top: 12px;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 6px;
+        }
+
+        .warning-data-item {
+            margin-bottom: 8px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .warning-data-label {
+            font-weight: 600;
+            margin-right: 8px;
+            min-width: 100px;
+        }
+
+        /* Applicant Data Card */
+        .data-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .data-row {
+            display: flex;
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            flex: 1;
+            font-weight: 500;
+            color: var(--gray-color);
+        }
+
+        .data-value {
+            flex: 2;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .btn:focus {
+            outline: 2px solid rgba(0, 0, 0, 0.2);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #15803D;
+        }
+
+        .btn-primary:disabled {
+            background-color: #9CA3AF;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-gray-color);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn.loading .spinner {
+            display: inline-block;
+        }
+
+        .btn.loading .btn-text {
+            display: none;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--modal-shadow);
+            padding: 24px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-summary {
+            background-color: var(--light-gray-color);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* Payment Modal */
+        .payment-modal {
+            max-width: 600px;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .payment-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .payment-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .payment-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .payment-subtitle {
+            color: var(--gray-color);
+        }
+
+        .payment-details {
+            background-color: var(--light-gray-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .payment-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .payment-label {
+            font-weight: 500;
+            color: var(--gray-color);
+        }
+
+        .payment-value {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .payment-amount {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        .payment-code-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        #paymentCode {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            background-color: white;
+            text-align: right;
+        }
+        
+        .btn-copy {
+            padding: 8px 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .countdown-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: rgba(220, 38, 38, 0.1);
+            border-radius: 8px;
+        }
+
+        .countdown-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--danger-color);
+        }
+
+        .countdown-timer {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--danger-color);
+        }
+
+        .payment-note {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(22, 163, 74, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .payment-note-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
+        }
+
+        .payment-note-text {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .payment-warning {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(220, 38, 38, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .payment-warning-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--danger-color);
+        }
+
+        .payment-warning-text {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+        
+        .upload-container {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        #fileName {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            word-break: break-all;
+        }
+
+        /* Footer */
+        .footer {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .copyright {
+            font-weight: 500;
+        }
+
+        .security-note {
+            background-color: #F3F4F6;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: var(--gray-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 12px;
+            }
+            
+            .header-top {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .logo-wrapper {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+            
+            .data-row {
+                flex-direction: column;
+            }
+            
+            .data-label {
+                margin-bottom: 4px;
+            }
+            
+            .warning-data-item {
+                flex-direction: column;
+            }
+            
+            .warning-data-label {
+                margin-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="logo-container">
+                    <div class="logo-wrapper">
+                        <img src="https://z-cdn-media.chatglm.cn/files/fd26ba9b-618a-4077-985e-03f7d4dff7ed.png?auth_key=1864741780-e0e5c62734ee4f7ebe8436ca34730336-0-9fe7507305cc81c5b52adf2acab08ea8" alt="Logo Imigrasi Indonesia" class="logo">
+                        <h1 class="title">Verifikasi Data Imigrasi Khusus WNA</h1>
+                    </div>
+                    <p class="security-warning-text">⚠️ Notifikasi ini jangan diberikan kepada siapapun demi keamanan data</p>
+                </div>
+                <div class="demo-badge">Agency Terverifikasi</div>
+            </div>
+        </header>
+
+        <!-- Warning Section -->
+        <div class="warning-section" role="alert" aria-labelledby="warning-title">
+            <div id="warning-title" class="warning-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="9" x2="12" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>WARNING!</span>
+            </div>
+            <div class="warning-content">
+                Dengan melanjutkan anda telah menyetujui ketentuan-ketentuan yang telah ditetapkan oleh Kementerian Hukum dan Hak Asasi Manusia Republik Indonesia.
+                
+                <div class="warning-data">
+                    <div class="warning-data-item">
+                        <span class="warning-data-label">ID Agency:</span>
+                        <span>DNP TK VASPD27</span>
+                    </div>
+                    <div class="warning-data-item">
+                        <span class="warning-data-label">Email:</span>
+                        <span>agencyerick@jakarta.com</span>
+                    </div>
+                    <div class="warning-data-item">
+                        <span class="warning-data-label">Alamat:</span>
+                        <span>jl. raya sukabumi, pamuruyan, kec. cibadak jawabarat</span>
+                    </div>
+                    <div class="warning-data-item">
+                        <span class="warning-data-label">Nama:</span>
+                        <span>erick wijaya SH</span>
+                    </div>
+                    <div class="warning-data-item">
+                        <span class="warning-data-label">Data Terjamin:</span>
+                        <div style="margin-top: 8px;">
+                            <div class="warning-data-item">
+                                <span class="warning-data-label">Nama:</span>
+                                <span>SURYATI SOEROTAROENO</span>
+                            </div>
+                            <div class="warning-data-item">
+                                <span class="warning-data-label">No. ITAS:</span>
+                                <span>E32C2C13</span>
+                            </div>
+                            <div class="warning-data-item">
+                                <span class="warning-data-label">No. Paspor:</span>
+                                <span>NY8JC2BP4</span>
+                            </div>
+                            <div class="warning-data-item">
+                                <span class="warning-data-label">Negara:</span>
+                                <span>Belanda</span>
+                            </div>
+                            <div class="warning-data-item">
+                                <span class="warning-data-label">Status:</span>
+                                <span>Ceklis hijau bertanda baik</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Note -->
+        <div class="security-note">
+            Jangan memberikan link atau gambar isi dalam Halaman ini demi Mencegah peretasan data.
+        </div>
+
+        <!-- Applicant Data Card -->
+        <div class="data-card">
+            <div class="card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <h2 class="card-title">Data Terjamin — Oleh Agency Hj. Erick Wijaya SH.</h2>
+            </div>
+            <div class="data-row">
+                <div class="data-label">Nama:</div>
+                <div class="data-value">SURYATI SOEROTAROENO</div>
+            </div>
+            <div class="data-row">
+                <div class="data-label">No. ITAS:</div>
+                <div class="data-value">E32C2C13</div>
+            </div>
+            <div class="data-row">
+                <div class="data-label">No. Paspor:</div>
+                <div class="data-value">NY8JC2BP4</div>
+            </div>
+            <div class="data-row">
+                <div class="data-label">Negara Asal:</div>
+                <div class="data-value">Belanda</div>
+            </div>
+            <div class="data-row">
+                <div class="data-label">Status:</div>
+                <div class="data-value">
+                    <span class="status-indicator">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Ceklis Hijau Bertanda Baik
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button id="continueBtn" class="btn btn-primary" aria-label="Lanjutkan proses verifikasi">
+                <span class="spinner"></span>
+                <span class="btn-text">Lanjut</span>
+            </button>
+            <button id="cancelBtn" class="btn btn-secondary" aria-label="Batalkan proses verifikasi">
+                Batal
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="copyright">Hak Cipta Copyright Imigrasi Indonesia</div>
+            Halaman ini adalah Verifikasi melalui sistem resmi Kemenkumham RI. yang diberikan kepada akun agency resmi.
+        </footer>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="modalOverlay" class="modal-overlay" role="dialog" aria-labelledby="modalTitle" aria-modal="true" aria-hidden="true">
+        <div class="modal">
+            <h2 id="modalTitle" class="modal-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Konfirmasi Verifikasi Data
+            </h2>
+            <div class="modal-body">
+                <p>Anda akan melanjutkan proses verifikasi data untuk:</p>
+                <div class="modal-summary">
+                    <div class="data-row">
+                        <div class="data-label">Nama:</div>
+                        <div class="data-value">SURYATI SOEROTAROENO</div>
+                    </div>
+                    <div class="data-row">
+                        <div class="data-label">No. ITAS:</div>
+                        <div class="data-value">E32C2C13</div>
+                    </div>
+                    <div class="data-row">
+                        <div class="data-label">No. Paspor:</div>
+                        <div class="data-value">NY8JC2BP4</div>
+                    </div>
+                    <div class="data-row">
+                        <div class="data-label">Negara Asal:</div>
+                        <div class="data-value">Belanda</div>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="agreeCheckbox">
+                    <label for="agreeCheckbox">Saya menyetujui</label>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="modalCancelBtn" class="btn btn-secondary">Batal</button>
+                <button id="modalConfirmBtn" class="btn btn-primary" disabled>
+                    <span class="spinner"></span>
+                    <span class="btn-text">Konfirmasi</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModalOverlay" class="modal-overlay" role="dialog" aria-labelledby="paymentModalTitle" aria-modal="true" aria-hidden="true">
+        <div class="modal payment-modal">
+            <div class="payment-header">
+                <div class="payment-logo">
+                    <img src="https://z-cdn-media.chatglm.cn/files/57c49bf9-b2cb-4296-b165-4ddf33adce35.png?auth_key=1864742624-d4445fba38084e9893de2ac19cc1b14b-0-d5e63e05606b2b3484e422f8feedbe2e" alt="Logo Pembayaran">
+                </div>
+                <h2 id="paymentModalTitle" class="payment-title">Pembayaran PNBB</h2>
+                <p class="payment-subtitle">Melalui akun agency yang telah diakui oleh Imigrasi</p>
+            </div>
+            
+            <div class="payment-details">
+                <div class="payment-row">
+                    <span class="payment-label">Kode Pembayaran via Akun Agency:</span>
+                    <div class="payment-code-container">
+                        <input type="text" id="paymentCode" value="910266000001234531" readonly>
+                        <button id="copyCodeBtn" class="btn-copy">Salin</button>
+                    </div>
+                </div>
+                <div class="payment-row">
+                    <span class="payment-label">Nama Pemohon:</span>
+                    <span class="payment-value">SURYATI SOEROTAROENO</span>
+                </div>
+                <div class="payment-row">
+                    <span class="payment-label">Jenis Pembayaran:</span>
+                    <span class="payment-value">PNBB - Visa Tinggal Terbatas<br>(Kode Agency: DNP TK VASPD27)</span>
+                </div>
+                <div class="payment-row">
+                    <span class="payment-label">Nominal:</span>
+                    <span class="payment-value payment-amount">Rp 5.003.500,00</span>
+                </div>
+            </div>
+            
+            <div class="countdown-container">
+                <div class="countdown-label">Batas Waktu Pembayaran:</div>
+                <div id="countdown-timer" class="countdown-timer">02:00:00</div>
+            </div>
+            
+            <div class="payment-note">
+                <div class="payment-note-title">Penting!</div>
+                <div class="payment-note-text">Tolong jangan lewatkan kesempatan baik ini karena data anda dengan status hijau membuktikan data anda sangat baik.</div>
+            </div>
+            
+            <div class="payment-warning">
+                <div class="payment-warning-title">Peringatan</div>
+                <div class="payment-warning-text">Apabila pembayaran ini diluar batas waktu yang sudah ditetapkan, maka permohonan anda sepenuhnya oleh system akan ditolak secara otomatis.</div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button id="paymentCloseBtn" class="btn btn-secondary">Tutup</button>
+                <div class="upload-container">
+                    <input type="file" id="paymentProofInput" accept="image/*" style="display: none;">
+                    <button id="uploadProofBtn" class="btn btn-primary">
+                        <span class="spinner"></span>
+                        <span class="btn-text">Upload Bukti Pembayaran</span>
+                    </button>
+                    <div id="fileName" class="file-name"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const continueBtn = document.getElementById('continueBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+            const agreeCheckbox = document.getElementById('agreeCheckbox');
+            
+            // Payment modal elements
+            const paymentModalOverlay = document.getElementById('paymentModalOverlay');
+            const paymentCloseBtn = document.getElementById('paymentCloseBtn');
+            const uploadProofBtn = document.getElementById('uploadProofBtn');
+            const paymentProofInput = document.getElementById('paymentProofInput');
+            const fileName = document.getElementById('fileName');
+            const countdownTimer = document.getElementById('countdown-timer');
+            const copyCodeBtn = document.getElementById('copyCodeBtn');
+            const paymentCodeInput = document.getElementById('paymentCode');
+            
+            // Data to be submitted
+            const applicantData = {
+                name: 'SURYATI SOEROTAROENO',
+                itasNo: 'E32C2C13',
+                passportNo: 'NY8JC2BP4',
+                country: 'Belanda',
+                status: 'Ceklis Hijau Bertanda Baik'
+            };
+            
+            // Copy to clipboard functionality
+            copyCodeBtn.addEventListener('click', function() {
+                paymentCodeInput.select();
+                document.execCommand('copy');
+                
+                const originalText = this.textContent;
+                this.textContent = 'Tersalin!';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
+            });
+            
+            // Countdown timer functionality
+            function initCountdown() {
+                let endTime = localStorage.getItem('paymentEndTime');
+                
+                if (!endTime) {
+                    const now = new Date();
+                    endTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+                    localStorage.setItem('paymentEndTime', endTime.toISOString());
+                } else {
+                    endTime = new Date(endTime);
+                }
+                
+                const interval = setInterval(function() {
+                    const now = new Date();
+                    const remainingTime = endTime - now;
+                    
+                    if (remainingTime <= 0) {
+                        clearInterval(interval);
+                        countdownTimer.textContent = "Waktu Habis";
+                        localStorage.removeItem('paymentEndTime');
+                        return;
+                    }
+                    
+                    const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+                    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+                    
+                    const formattedTime = 
+                        (hours < 10 ? '0' : '') + hours + ':' +
+                        (minutes < 10 ? '0' : '') + minutes + ':' +
+                        (seconds < 10 ? '0' : '') + seconds;
+                    
+                    countdownTimer.textContent = formattedTime;
+                }, 1000);
+            }
+            
+            // Open modal
+            continueBtn.addEventListener('click', function() {
+                modalOverlay.style.display = 'flex';
+                modalOverlay.setAttribute('aria-hidden', 'false');
+                agreeCheckbox.focus();
+            });
+            
+            // Close modal
+            function closeModal() {
+                modalOverlay.style.display = 'none';
+                modalOverlay.setAttribute('aria-hidden', 'true');
+                agreeCheckbox.checked = false;
+                modalConfirmBtn.disabled = true;
+                continueBtn.focus();
+            }
+            
+            cancelBtn.addEventListener('click', closeModal);
+            modalCancelBtn.addEventListener('click', closeModal);
+            
+            // Handle checkbox change
+            agreeCheckbox.addEventListener('change', function() {
+                modalConfirmBtn.disabled = !this.checked;
+            });
+            
+            // Handle confirm button with loading animation
+            modalConfirmBtn.addEventListener('click', function() {
+                this.classList.add('loading');
+                
+                setTimeout(function() {
+                    modalConfirmBtn.classList.remove('loading');
+                    closeModal();
+                    
+                    paymentModalOverlay.style.display = 'flex';
+                    paymentModalOverlay.setAttribute('aria-hidden', 'false');
+                    initCountdown();
+                }, 1500);
+            });
+            
+            // Close payment modal
+            function closePaymentModal() {
+                paymentModalOverlay.style.display = 'none';
+                paymentModalOverlay.setAttribute('aria-hidden', 'true');
+                continueBtn.focus();
+            }
+            
+            paymentCloseBtn.addEventListener('click', closePaymentModal);
+            
+            // Handle file upload simulation
+            uploadProofBtn.addEventListener('click', function() {
+                paymentProofInput.click();
+            });
+
+            paymentProofInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    fileName.textContent = `File yang dipilih: ${this.files[0].name}`;
+                    
+                    // Simulate upload process
+                    uploadProofBtn.classList.add('loading');
+                    uploadProofBtn.disabled = true;
+                    
+                    setTimeout(function() {
+                        uploadProofBtn.classList.remove('loading');
+                        uploadProofBtn.disabled = false;
+                        
+                        const successMessage = document.createElement('div');
+                        successMessage.setAttribute('role', 'alert');
+                        successMessage.style.position = 'fixed';
+                        successMessage.style.top = '20px';
+                        successMessage.style.left = '50%';
+                        successMessage.style.transform = 'translateX(-50%)';
+                        successMessage.style.backgroundColor = '#16A34A';
+                        successMessage.style.color = 'white';
+                        successMessage.style.padding = '12px 24px';
+                        successMessage.style.borderRadius = '6px';
+                        successMessage.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                        successMessage.style.zIndex = '2000';
+                        successMessage.textContent = 'Bukti pembayaran berhasil diunggah.';
+                        
+                        document.body.appendChild(successMessage);
+                        
+                        setTimeout(function() {
+                            document.body.removeChild(successMessage);
+                        }, 3000);
+                        
+                        closePaymentModal();
+                    }, 2000); // Simulate 2 seconds upload time
+                }
+            });
+            
+            // Close modal when clicking outside
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+            
+            paymentModalOverlay.addEventListener('click', function(e) {
+                if (e.target === paymentModalOverlay) {
+                    closePaymentModal();
+                }
+            });
+            
+            // Handle ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (modalOverlay.style.display === 'flex') {
+                        closeModal();
+                    } else if (paymentModalOverlay.style.display === 'flex') {
+                        closePaymentModal();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
